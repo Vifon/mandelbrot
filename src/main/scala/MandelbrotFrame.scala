@@ -26,7 +26,7 @@ class MandelbrotFrame extends JFrame {
         case KeyEvent.VK_PERIOD => mandelbrot.magnify(0.5)
         case KeyEvent.VK_SEMICOLON  => mandelbrot.precision( 50)
         case KeyEvent.VK_QUOTE      => mandelbrot.precision(-50)
-        case KeyEvent.VK_SLASH      => mandelbrot.toggleBloom()
+        case KeyEvent.VK_SLASH      => mandelbrot.nextMode()
         case KeyEvent.VK_Q => System.exit(0)
         case _ => ()
       }

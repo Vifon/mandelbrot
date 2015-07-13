@@ -2,14 +2,34 @@
 import java.awt.{Canvas, Color, Graphics}
 import java.awt.image.BufferedImage
 
-class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
-  val buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+private abstract class Mode {
+  def next: Mode
+}
 
-  var pan_x = -0.5
-  var pan_y =  0.0
-  var zoom  =  1.0
-  var iterations = 50
-  var bloom = false
+private case class BloomMode extends Mode {
+  override def next: Mode = OutlineMode()
+}
+private case class OutlineMode extends Mode {
+  override def next: Mode = FlatMode()
+}
+private case class FlatMode extends Mode {
+  override def next: Mode = InvertedMode()
+}
+private case class InvertedMode extends Mode {
+  override def next: Mode = SemiInvertedMode()
+}
+private case class SemiInvertedMode extends Mode {
+  override def next: Mode = BloomMode()
+}
+
+class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
+  private val buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+
+  private var pan_x = -0.5
+  private var pan_y =  0.0
+  private var zoom  =  1.0
+  private var iterations = 50
+  private var mode: Mode = BloomMode()
 
   def pan(x: Double, y: Double) = {
     pan_x += x / zoom
@@ -30,8 +50,8 @@ class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
     repaint()
   }
 
-  def toggleBloom() = {
-    bloom = !bloom
+  def nextMode() = {
+    mode = mode.next
     draw()
     repaint()
   }
@@ -52,8 +72,13 @@ class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
         case Some(m) => { color = m.toFloat / iterations }
       }
 
-      if (bloom)
-        color = color.floor
+      mode match {
+        case BloomMode()        => ()
+        case OutlineMode()      => { if (color == 1) color = 0 }
+        case FlatMode()         => { color = color.floor }
+        case InvertedMode()     => { color = 1 - color }
+        case SemiInvertedMode() => { if (color < 1) color = 1 - color }
+      }
 
       buffer.setRGB(x, y, new Color(color, 0, 0).getRGB())
     }
