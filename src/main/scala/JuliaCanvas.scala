@@ -23,7 +23,19 @@ private case class SemiInvertedMode extends Mode {
   override def next: Mode = BloomMode()
 }
 
-class MandelbrotCanvas(width: Int, height: Int, setChecker: ComplexSet) extends JPanel {
+class MandelbrotCanvas(
+  width: Int,
+  height: Int,
+  var _juliaSet: JuliaFamilySet
+) extends JPanel {
+
+  def juliaSet = _juliaSet
+  def juliaSet_=(set: JuliaFamilySet) {
+    _juliaSet = set
+    redraw()
+  }
+
+
   private val buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
   private var pan_x = -0.5
@@ -32,29 +44,30 @@ class MandelbrotCanvas(width: Int, height: Int, setChecker: ComplexSet) extends 
   private var iterations = 50
   private var mode: Mode = BloomMode()
 
+  def redraw() = {
+    draw()
+    repaint()
+  }
+
   def pan(x: Double, y: Double) = {
     pan_x += x / zoom
     pan_y -= y / zoom
-    draw()
-    repaint()
+    redraw()
   }
 
   def magnify(n: Double) = {
     zoom *= n
-    draw()
-    repaint()
+    redraw()
   }
 
   def precision(n: Int) = {
     iterations = Math.max(iterations + n, 1)
-    draw()
-    repaint()
+    redraw()
   }
 
   def nextMode() = {
     mode = mode.next
-    draw()
-    repaint()
+    redraw()
   }
 
   private def draw() = {
@@ -75,7 +88,7 @@ class MandelbrotCanvas(width: Int, height: Int, setChecker: ComplexSet) extends 
     val im: Double = (((y / h) * 2 - 1) / zoom + pan_y)
 
     var color: Float = 0
-    setChecker.check(Complex(re, im), iterations) match {
+    juliaSet.check(Complex(re, im), iterations) match {
       case None => { color = 1 }
       case Some(m) => { color = m.toFloat / iterations }
     }
