@@ -2,12 +2,12 @@
 import java.awt.event.{KeyEvent, KeyListener}
 import javax.swing.JFrame
 
-class MandelbrotFrame(canvas_width: Int, canvas_height: Int) extends JFrame {
+class MandelbrotFrame(canvas_width: Int, canvas_height: Int, setChecker: ComplexSet) extends JFrame {
   setTitle("Bitmap")
   setSize(canvas_width, canvas_height)
   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 
-  val mandelbrot = new MandelbrotCanvas(canvas_width, canvas_height)
+  val mandelbrot = new MandelbrotCanvas(canvas_width, canvas_height, setChecker)
   add(mandelbrot)
 
   val keyboardListener = new KeyListener {

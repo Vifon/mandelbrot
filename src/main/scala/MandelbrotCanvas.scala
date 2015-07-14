@@ -23,7 +23,7 @@ private case class SemiInvertedMode extends Mode {
   override def next: Mode = BloomMode()
 }
 
-class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
+class MandelbrotCanvas(width: Int, height: Int, setChecker: ComplexSet) extends JPanel {
   private val buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
   private var pan_x = -0.5
@@ -75,7 +75,7 @@ class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
     val im: Double = (((y / h) * 2 - 1) / zoom + pan_y)
 
     var color: Float = 0
-    Mandelbrot.check(Complex(re, im), iterations) match {
+    setChecker.check(Complex(re, im), iterations) match {
       case None => { color = 1 }
       case Some(m) => { color = m.toFloat / iterations }
     }
