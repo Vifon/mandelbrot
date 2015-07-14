@@ -58,8 +58,8 @@ class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
 
   private def draw() = {
     for {
-      y <- 0 until height
-      x <- 0 until width
+      y <- Range(0, height).par
+      x <- Range(0, width).par
     } {
       val w = width.toDouble
       val h = height.toDouble
