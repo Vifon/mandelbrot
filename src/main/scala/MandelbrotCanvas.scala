@@ -46,7 +46,7 @@ class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
   }
 
   def precision(n: Int) = {
-    iterations += n
+    iterations = Math.max(iterations + n, 50)
     draw()
     repaint()
   }
