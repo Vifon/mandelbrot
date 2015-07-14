@@ -64,7 +64,8 @@ class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
     } {
       val w = width.toDouble
       val h = height.toDouble
-      val re: Double = (((x / w) * 2 - 1) / zoom + pan_x)
+      val ratio = w / h
+      val re: Double = ((ratio*((x / w) * 2 - 1)) / zoom + pan_x)
       val im: Double = (((y / h) * 2 - 1) / zoom + pan_y)
 
       var color: Float = 0

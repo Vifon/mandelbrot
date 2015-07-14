@@ -2,10 +2,7 @@
 import java.awt.event.{KeyEvent, KeyListener}
 import javax.swing.JFrame
 
-class MandelbrotFrame extends JFrame {
-  val canvas_width = 500
-  val canvas_height = 500
-
+class MandelbrotFrame(canvas_width: Int, canvas_height: Int) extends JFrame {
   setTitle("Bitmap")
   setSize(canvas_width, canvas_height)
   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
