@@ -62,28 +62,33 @@ class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
       y <- Range(0, height).par
       x <- Range(0, width).par
     } {
-      val w = width.toDouble
-      val h = height.toDouble
-      val ratio = w / h
-      val re: Double = ((ratio*((x / w) * 2 - 1)) / zoom + pan_x)
-      val im: Double = (((y / h) * 2 - 1) / zoom + pan_y)
-
-      var color: Float = 0
-      Mandelbrot.check(Complex(re, im), iterations) match {
-        case None => { color = 1 }
-        case Some(m) => { color = m.toFloat / iterations }
-      }
-
-      mode match {
-        case BloomMode()        => ()
-        case OutlineMode()      => { if (color == 1) color = 0 }
-        case FlatMode()         => { color = color.floor }
-        case InvertedMode()     => { color = 1 - color }
-        case SemiInvertedMode() => { if (color < 1) color = 1 - color }
-      }
-
-      buffer.setRGB(x, y, new Color(color, 0, 0).getRGB())
+      val color = getPixelColor(x, y)
+      buffer.setRGB(x, y, color.getRGB())
     }
+  }
+
+  private def getPixelColor(x: Int, y: Int): Color = {
+    val w = width.toDouble
+    val h = height.toDouble
+    val ratio = w / h
+    val re: Double = ((ratio*((x / w) * 2 - 1)) / zoom + pan_x)
+    val im: Double = (((y / h) * 2 - 1) / zoom + pan_y)
+
+    var color: Float = 0
+    Mandelbrot.check(Complex(re, im), iterations) match {
+      case None => { color = 1 }
+      case Some(m) => { color = m.toFloat / iterations }
+    }
+
+    mode match {
+      case BloomMode()        => ()
+      case OutlineMode()      => { if (color == 1) color = 0 }
+      case FlatMode()         => { color = color.floor }
+      case InvertedMode()     => { color = 1 - color }
+      case SemiInvertedMode() => { if (color < 1) color = 1 - color }
+    }
+
+    new Color(color, 0, 0)
   }
 
   draw()
