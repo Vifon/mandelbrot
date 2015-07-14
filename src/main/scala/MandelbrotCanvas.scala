@@ -1,6 +1,7 @@
 
-import java.awt.{Canvas, Color, Graphics}
+import java.awt.{Color, Graphics}
 import java.awt.image.BufferedImage
+import javax.swing.JPanel
 
 private abstract class Mode {
   def next: Mode
@@ -22,7 +23,7 @@ private case class SemiInvertedMode extends Mode {
   override def next: Mode = BloomMode()
 }
 
-class MandelbrotCanvas(width: Int, height: Int) extends Canvas {
+class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
   private val buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
   private var pan_x = -0.5
