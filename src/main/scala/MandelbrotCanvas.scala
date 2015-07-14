@@ -93,9 +93,6 @@ class MandelbrotCanvas(width: Int, height: Int) extends JPanel {
 
   draw()
 
-  override def paint(g: Graphics) = {
-    def drawPixel(x: Int, y: Int, size: Int) = g.fillRect(x, y, size, size)
-
+  override def paint(g: Graphics) =
     g.drawImage(buffer, 0, 0, width, height, null)
-  }
 }
