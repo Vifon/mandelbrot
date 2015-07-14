@@ -46,7 +46,7 @@ class MandelbrotCanvas(width: Int, height: Int, setChecker: ComplexSet) extends 
   }
 
   def precision(n: Int) = {
-    iterations = Math.max(iterations + n, 50)
+    iterations = Math.max(iterations + n, 1)
     draw()
     repaint()
   }
