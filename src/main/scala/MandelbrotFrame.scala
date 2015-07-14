@@ -10,7 +10,7 @@ class MandelbrotFrame(canvas_width: Int, canvas_height: Int) extends JFrame {
   val mandelbrot = new MandelbrotCanvas(canvas_width, canvas_height)
   add(mandelbrot)
 
-  val arrowListener = new KeyListener {
+  val keyboardListener = new KeyListener {
     override def keyTyped(e: KeyEvent) = ()
     override def keyReleased(e: KeyEvent) = ()
     override def keyPressed(e: KeyEvent) =
@@ -28,7 +28,7 @@ class MandelbrotFrame(canvas_width: Int, canvas_height: Int) extends JFrame {
         case _ => ()
       }
   }
-  addKeyListener(arrowListener)
+  addKeyListener(keyboardListener)
 
   setVisible(true)
 }
