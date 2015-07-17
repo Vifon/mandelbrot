@@ -3,7 +3,7 @@ trait JuliaFamilySet {
   def check(point: Complex, maxIterations: Int): Option[Int]
 
   /** The modifier used on the z_n value in the equation */
-  def modifier(z_n: Complex): Complex = identity(z_n)
+  def modifier(z_n: Complex): Complex = z_n
 
   final def check(z_n: Complex, p: Complex, iteration: Int, maxIterations: Int): Option[Int] = {
     if (iteration == maxIterations) {
